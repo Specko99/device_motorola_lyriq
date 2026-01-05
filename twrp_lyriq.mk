@@ -10,6 +10,9 @@
 # Configure base.mk
 $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 
+# Configure core_64_bit.mk
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+
 # Configure launch_with_vendor_ramdisk.mk
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch_with_vendor_ramdisk.mk)
 
@@ -23,7 +26,7 @@ $(call inherit-product, vendor/twrp/config/common.mk)
 $(call inherit-product, device/motorola/lyriq/device.mk)
 
 PRODUCT_DEVICE := lyriq
-PRODUCT_NAME := omni_lyriq
+PRODUCT_NAME := twrp_lyriq
 PRODUCT_BRAND := motorola
 PRODUCT_MODEL := motorola edge 40
 PRODUCT_MANUFACTURER := motorola

@@ -9,6 +9,4 @@ PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/twrp_lyriq.mk
 
 COMMON_LUNCH_CHOICES := \
-    omni_lyriq-user \
-    omni_lyriq-userdebug \
-    omni_lyriq-eng
+    twrp_lyriq-ap2a-eng
