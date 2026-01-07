@@ -7,9 +7,8 @@
 
 LOCAL_PATH := device/motorola/lyriq
 
-# API
-PRODUCT_SHIPPING_API_LEVEL := 33
-PRODUCT_TARGET_VNDK_VERSION := 35
+# A/B
+ENABLE_VIRTUAL_AB := true
 
 # A/B
 AB_OTA_UPDATER := true
