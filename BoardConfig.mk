@@ -77,7 +77,7 @@ BOARD_MOTOROLA_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext vendor_dlk
 BOARD_MOTOROLA_DYNAMIC_PARTITIONS_SIZE := 9122611200 # TODO: Fix hardcoded value
 
 # Kernel modules
-TW_LOAD_VENDOR_MODULES := $(shell echo \"$(shell ls $(DEVICE_PATH)/recovery/root/lib/modules)\")
+#TW_LOAD_VENDOR_MODULES := $(shell echo \"$(shell ls $(DEVICE_PATH)/recovery/root/lib/modules)\")
 
 # Workaround for error copying vendor files to recovery ramdisk
 TARGET_COPY_OUT_VENDOR := vendor
@@ -123,3 +123,5 @@ TW_USE_TOOLBOX := true
 TW_INCLUDE_REPACKTOOLS := true
 TW_INCLUDE_FASTBOOTD := true
 TW_INCLUDE_RESETPROP := true
+TW_INPUT_BLACKLIST := "hbtp_vm"
+TW_LOAD_VENDOR_MODULES := "goodix_brl_u_mmi.ko"
