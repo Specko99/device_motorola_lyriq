@@ -78,7 +78,7 @@ BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 67108864
 BOARD_SUPER_PARTITION_SIZE := 9126805504 # TODO: Fix hardcoded value
 BOARD_SUPER_PARTITION_GROUPS := motorola_dynamic_partitions
-BOARD_MOTOROLA_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext system_dlkm vendor_dlkm vendor product
+BOARD_MOTOROLA_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext vendor_dlkm vendor product
 BOARD_MOTOROLA_DYNAMIC_PARTITIONS_SIZE := 9122611200 # TODO: Fix hardcoded value
 
 # Workaround for error copying vendor files to recovery ramdisk
