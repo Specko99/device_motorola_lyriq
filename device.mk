@@ -32,6 +32,23 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_system=erofs \
     POSTINSTALL_OPTIONAL_system=true
 
+# Additional Target Libraries
+TARGET_RECOVERY_DEVICE_MODULES += \
+    android.hardware.keymaster@4.1
+
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.1.so
+
+ Keymint
+PRODUCT_PACKAGES += \
+    android.hardware.security.keymint \
+    android.hardware.security.secureclock \
+    android.hardware.security.sharedsecret
+
+# Keystore2
+PRODUCT_PACKAGES += \
+    android.system.keystore2
+
 # Dynamic
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 

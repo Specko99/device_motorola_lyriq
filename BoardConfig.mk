@@ -44,7 +44,7 @@ BOARD_KERNEL_SEPARATED_DTBO := true
 
 # Kernel
 BOARD_KERNEL_BASE := 0x40078000
-BOARD_VENDOR_CMDLINE := bootopt=64S3,32N2,64N2
+BOARD_VENDOR_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.bootdevice=11270000.ufshci
 BOARD_RAMDISK_OFFSET := 0x11088000
 BOARD_TAGS_OFFSET := 0x07c08000
 BOARD_BOOT_HEADER_VERSION := 4
@@ -76,8 +76,13 @@ BOARD_SUPER_PARTITION_GROUPS := motorola_dynamic_partitions
 BOARD_MOTOROLA_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext vendor_dlkm odm vendor odm_dlkm product
 BOARD_MOTOROLA_DYNAMIC_PARTITIONS_SIZE := 9122611200 # TODO: Fix hardcoded value
 
-# test
+# Kernel modules
+TW_LOAD_VENDOR_MODULES := $(shell echo \"$(shell ls $(DEVICE_PATH)/recovery/root/lib/modules)\")
+
+# Workaround for error copying vendor files to recovery ramdisk
 TARGET_COPY_OUT_VENDOR := vendor
+
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/recovery.fstab
 
 # Platform
 TARGET_BOARD_PLATFORM := mt6893
@@ -114,10 +119,7 @@ TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
 TW_SCREEN_BLANK_ON_BOOT := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_TOOLBOX := true
 TW_INCLUDE_REPACKTOOLS := true
-TW_DISABLE_TASK_PROFILES := true
 TW_INCLUDE_FASTBOOTD := true
 TW_INCLUDE_RESETPROP := true
-TW_EXCLUDE_VENDOR := true
