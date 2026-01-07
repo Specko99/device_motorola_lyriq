@@ -182,4 +182,3 @@ arm_dsu_pmu.ko
 uload_ind.ko
 load_track.ko
 sec.ko
-goodix_brl_u_mmi.ko
