@@ -82,7 +82,7 @@ TW_LOAD_VENDOR_MODULES := $(shell echo \"$(shell ls $(DEVICE_PATH)/recovery/root
 # Workaround for error copying vendor files to recovery ramdisk
 TARGET_COPY_OUT_VENDOR := vendor
 
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/recovery.fstab
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
 # Platform
 TARGET_BOARD_PLATFORM := mt6893
