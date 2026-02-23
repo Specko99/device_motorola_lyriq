@@ -1,6 +1,7 @@
 service vendor.gatekeeper-default /vendor/bin/hw/android.hardware.gatekeeper-service.trustonic
     class early_hal
-    user system
+    user root
+    seclabel u:r:recovery:s0
 
 # We use the property set by Trustonic daemon so mcOpenSession is available
 # and DrAndroid is loaded

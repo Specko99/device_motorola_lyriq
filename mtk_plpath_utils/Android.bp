@@ -1,3 +1,6 @@
+soong_namespace {
+}
+
 cc_binary {
     name: "mtk_plpath_utils",
     srcs:  ["mtk_plpath_utils.cpp"],

@@ -7,6 +7,12 @@
 
 DEVICE_PATH := device/motorola/lyriq
 
+# Build Hack
+BUILD_BROKEN_DUP_RULES := true
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+BUILD_BROKEN_NINJA_USES_ENV_VARS += RTIC_MPGEN
+BUILD_BROKEN_PLUGIN_VALIDATION := soong-libaosprecovery_defaults soong-libguitwrp_defaults soong-libminuitwrp_defaults soong-vold_defaults
+
 # Assertation
 TARGET_OTA_ASSERT_DEVICE := lyriq
 
@@ -31,9 +37,6 @@ TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a55
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := lyriq
 TARGET_NO_BOOTLOADER := true
-
-TARGET_USES_64_BIT_BINDER := true
-TARGET_SUPPORTS_64_BIT_APPS := true
 
 # Display
 TARGET_SCREEN_DENSITY := 400
@@ -109,19 +112,37 @@ BOARD_VNDK_VERSION := current
 # Verified Boot
 BOARD_AVB_ENABLE := true
 
+# Vendor Modules
+TW_LOAD_VENDOR_MODULES := $(shell echo \"$(shell ls $(DEVICE_PATH)/recovery/root/lib/modules)\")
+
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := 2099-12-31
 PLATFORM_VERSION := 16.1.0
+
+# Crypto
+TW_USE_FSCRYPT_POLICY := 2
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
-BOARD_USES_METADATA_PARTITION := true
+#TW_PREPARE_DATA_MEDIA_EARLY := true
+TW_FORCE_KEYMASTER_VER := true # Note that this is just a dummy value, because stock don't actually have keymaster, only keymint.
 
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
+
+BOARD_RECOVERY_SEPOLICY_DIRS += \
+    $(DEVICE_PATH)/sepolicy
 
 # TWRP Configuration
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TW_THEME := portrait_hdpi
-TW_EXTRA_LANGUAGES := true
+TW_LINKER_DEBUG := true
+TW_EXTRA_LANGUAGES := false
+TW_EXCLUDE_APP_MANAGER := true
+BOARD_HAS_NO_REAL_SDCARD := true
+TW_EXCLUDE_USB_STORAGE := true
+TARGET_USES_LOGD := true
+TWRP_INCLUDE_LOGCAT := true
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_USE_TOOLBOX := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
@@ -131,5 +152,3 @@ TW_EXCLUDE_APEX := true
 TW_INCLUDE_REPACKTOOLS := true
 TW_INCLUDE_FASTBOOTD := true
 TW_INCLUDE_RESETPROP := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_LOAD_VENDOR_MODULES := "goodix_brl_u_mmi.ko fusb304.ko dsi-panel-mot-tm-vtdr6115-655-fhdp-video-144hz.ko rpmb-mtk.ko"

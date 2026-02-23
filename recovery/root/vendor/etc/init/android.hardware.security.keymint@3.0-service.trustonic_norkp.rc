@@ -1,4 +1,5 @@
 service vendor.keymint-trustonic /vendor/bin/hw/android.hardware.security.keymint@3.0-service.trustonic_norkp
     class early_hal
-    user system
-    group system
+    user root
+    group root
+    seclabel u:r:recovery:s0

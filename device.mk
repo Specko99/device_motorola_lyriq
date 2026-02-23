@@ -7,6 +7,13 @@
 
 LOCAL_PATH := device/motorola/lyriq
 
+# API
+PRODUCT_SHIPPING_API_LEVEL := 33
+PRODUCT_TARGET_VNDK_VERSION := 35
+
+# TWRP in Vendor Boot
+PRODUCT_PROPERTY_OVERRIDES += ro.twrp.vendor_boot=true
+
 # A/B
 ENABLE_VIRTUAL_AB := true
 
@@ -32,25 +39,17 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_system=erofs \
     POSTINSTALL_OPTIONAL_system=true
 
-# Additional Target Libraries
-TARGET_RECOVERY_DEVICE_MODULES += \
-    android.hardware.keymaster@4.1
-
-TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.1.so
-
-# Keymint
-PRODUCT_PACKAGES += \
-    android.hardware.security.keymint \
-    android.hardware.security.secureclock \
-    android.hardware.security.sharedsecret
-
 # Keystore2
 PRODUCT_PACKAGES += \
     android.system.keystore2
 
 # Dynamic
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
+# Health
+#PRODUCT_PACKAGES += \
+#    android.hardware.health@2.1-impl \
+#    android.hardware.health@2.1-service
 
 # Bootctrl
 PRODUCT_PACKAGES += \
@@ -66,12 +65,12 @@ PRODUCT_PACKAGES += \
     mtk_plpath_utils.recovery
 
 PRODUCT_PACKAGES += \
-    bootctrl.mt6893
-
-PRODUCT_PACKAGES += \
     otapreopt_script \
     cppreopts.sh \
     update_engine \
     update_verifier \
     update_engine_sideload
 
+PRODUCT_SOONG_NAMESPACES += \
+    device/motorola/lyriq/bootctrl \
+    device/motorola/lyriq/mtk_plpath_utils

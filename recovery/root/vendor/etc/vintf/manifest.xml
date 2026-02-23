@@ -210,8 +210,12 @@
         <fqname>IVideoTelephony/default</fqname>
     </hal>
     <hal format="aidl">
-        <name>vendor.trustonic.tee</name>
-        <fqname>ITee/default</fqname>
+    <name>vendor.trustonic.tee</name>
+
+    <interface>
+        <name>ITee</name>
+        <instance>default</instance>
+    </interface>
     </hal>
     <hal format="aidl">
         <name>vendor.trustonic.tui</name>

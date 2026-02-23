@@ -1,13 +1,11 @@
-import /init.recovery.project.rc
-import /init.recovery.usb.rc
+import /tee.rc
+import /trustonic.rc
 
 on init
     setprop sys.usb.configfs 1
     setprop sys.usb.ffs.aio_compat 1
-
-on fs && property:ro.debuggable=0
-    # distinguish USB shoulde connect or not, i.e. CDP vs SDP
-    # set charging free due to it wait for USB activation
+    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64
+    mount_all /first_stage_ramdisk/fstab.mt6893 --early
 
 on post-fs
     # Support A/B feature for EMMC and UFS boot region
@@ -37,3 +35,26 @@ on post-fs
 
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/platform/bootdevice
+
+    start mtk.plpath.utils.link
+    start vendor.boot-default
+    start vendor.keymint-trustonic
+
+service vendor.boot-default /vendor/bin/hw/android.hardware.boot-service.mtk
+    class hal
+    user root
+    group root
+    seclabel u:r:recovery:s0
+
+service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+    on property:twrp.decrypt.done=true
+    stop mobicore
+    stop vendor.gatekeeper-default
+    stop vendor.keymint-trustonic

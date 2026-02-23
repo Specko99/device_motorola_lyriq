@@ -14,6 +14,9 @@
 // limitations under the License.
 //
 
+soong_namespace {
+}
+
 cc_library_shared {
     name: "android.hardware.boot@1.2-mtkimpl",
     stem: "android.hardware.boot@1.0-impl-1.2-mtkimpl",
@@ -23,6 +26,7 @@ cc_library_shared {
     ],
     relative_install_path: "hw",
     vendor: true,
+    vendor_ramdisk_available: true,
     recovery_available: true,
     srcs: ["BootControl.cpp", "boot_region_control.cpp"],
 
@@ -32,6 +36,7 @@ cc_library_shared {
         "liblog",
         "libhidlbase",
         "libhardware",
+        "libbase",
         "libutils",
         "android.hardware.boot@1.0",
         "android.hardware.boot@1.1",
