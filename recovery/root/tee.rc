@@ -1,8 +1,9 @@
 on init
     #create mountpoint for /mnt/vendor/persist partition
-    mkdir /mnt/vendor/persist 0771 system system
+    mkdir /mnt/vendor/persist 0700 root root
 
 on post-fs
+    mount ext4 /dev/block/by-name/persist /mnt/vendor/persist rw
     chown system system /mnt/vendor/persist
     chmod 0771 /mnt/vendor/persist
 

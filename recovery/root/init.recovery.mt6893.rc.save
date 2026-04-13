@@ -1,10 +1,6 @@
 import /tee.rc
 import /trustonic.rc
 
-on early-init
-    insmod /vendor/lib/modules/mcDrvModule.ko
-    wait /sys/module/mcDrvModule 20
-
 on init
     setprop sys.usb.configfs 1
     setprop sys.usb.ffs.aio_compat 1
@@ -45,10 +41,6 @@ on post-fs
 
     start mtk.plpath.utils.link
 
-on late-init
-    start vendor.gatekeeper-default
-    start vendor.keymint-trustonic
-
 service vendor.boot-default /vendor/bin/hw/android.hardware.boot-service.mtk
     class hal
     user root
@@ -62,6 +54,11 @@ service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     disabled
     oneshot
     seclabel u:r:recovery:s0
+
+    on property:crypto.ready=1
+    start mobicore
+    start vendor.gatekeeper-default
+    start vendor.keymint-trustonic
 
     on property:twrp.decrypt.done=true
     stop mobicore
