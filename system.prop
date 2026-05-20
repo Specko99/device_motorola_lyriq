@@ -3,6 +3,7 @@ ro.postinstall.fstab.prefix=/system
 
 # USB MTP
 ro.sys.usb.storage.type=mtp
+ro.sys.usb.config=mtp,adb
 
 # Crypto
 ro.crypto.volume.filenames_mode=aes-256-cts
@@ -13,3 +14,8 @@ ro.vendor.mtk_trustonic_tee_support=1
 
 # Gatekeeper
 ro.hardware.gatekeeper=trustonic
+
+# 
+ro.build.tags=release-keys
+ro.system.build.tags=release-keys
+ro.vendor.build.tags=release-keys

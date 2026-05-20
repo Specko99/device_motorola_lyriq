@@ -46,11 +46,6 @@ PRODUCT_PACKAGES += \
 # Dynamic
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
-# We need Vold
-PRODUCT_PACKAGES += \
-    vold \
-    vdc
-
 # Health
 PRODUCT_PACKAGES += \
     android.hardware.health@2.1-impl \
@@ -65,7 +60,7 @@ PRODUCT_PACKAGES += \
     mtk_plpath_utils.recovery
 
 # Strace
-    PRODUCT_PACKAGES += strace
+PRODUCT_PACKAGES += strace
 
 PRODUCT_PACKAGES += \
     otapreopt_script \

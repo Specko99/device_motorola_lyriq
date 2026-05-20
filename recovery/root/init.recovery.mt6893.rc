@@ -1,18 +1,11 @@
 import /tee.rc
 import /trustonic.rc
 
-on early-init
-    insmod /vendor/lib/modules/mcDrvModule.ko
-    wait /sys/module/mcDrvModule 20
-
 on init
     setprop sys.usb.configfs 1
     setprop sys.usb.ffs.aio_compat 1
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64
     mount_all /first_stage_ramdisk/fstab.mt6893 --early
-
-on fs
-    start vendor.boot-default
 
 on post-fs
     # Support A/B feature for EMMC and UFS boot region
@@ -45,10 +38,6 @@ on post-fs
 
     start mtk.plpath.utils.link
 
-on late-init
-    start vendor.gatekeeper-default
-    start vendor.keymint-trustonic
-
 service vendor.boot-default /vendor/bin/hw/android.hardware.boot-service.mtk
     class hal
     user root
@@ -62,8 +51,14 @@ service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     disabled
     oneshot
     seclabel u:r:recovery:s0
-
-    on property:twrp.decrypt.done=true
+    
+on property:twrp.decrypt.done=true
     stop mobicore
     stop vendor.gatekeeper-default
     stop vendor.keymint-trustonic
+
+on boot
+    start vendor.boot-default
+    start vendor.mot.haptic-hal
+    start vendor.gatekeeper-default
+    start vendor.keymint-trustonic

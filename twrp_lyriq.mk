@@ -34,6 +34,6 @@ PRODUCT_MANUFACTURER := motorola
 PRODUCT_GMS_CLIENTID_BASE := android-motorola
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRIVATE_BUILD_DESC="lyriq_g-user 15 V1TLS35.73-60-3-6 4b84db-3efd0 release keys"
+    PRIVATE_BUILD_DESC="lyriq_g-user 15 V1TLS35.73-60-3-9 b8b1ed-788c2e release-keys MV-281"
 
-BUILD_FINGERPRINT := motorola/lyriq_g/lyriq:15/V1TLS35.73-60-3-6/4b84db-3efd0:user/release-keys
+BUILD_FINGERPRINT := motorola/lyriq_g/lyriq:15/V1TLS35.73-60-3-9/b8b1ed-788c2e:user/release-keys
