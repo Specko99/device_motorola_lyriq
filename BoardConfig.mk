@@ -69,9 +69,8 @@ BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 
-# Kernel - prebuilt
+# Kernel - prebuilt dtb
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb
-#BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
@@ -106,6 +105,7 @@ BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT :=
 
 # Mtk
 BOARD_USES_MTK_HARDWARE := true
+TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 
 # Treble
 BOARD_VNDK_VERSION := current
@@ -114,7 +114,7 @@ BOARD_VNDK_VERSION := current
 BOARD_AVB_ENABLE := true
 
 # Vendor Modules
-TW_LOAD_VENDOR_MODULES := $(shell echo \"$(shell ls $(DEVICE_PATH)/recovery/root/lib/modules)\")
+TW_LOAD_VENDOR_MODULES := true
 
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
@@ -130,13 +130,16 @@ BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 
+# Custom battery path
+TW_USE_LEGACY_BATTERY_SERVICES := true
+TW_CUSTOM_BATTERY_PATH := /sys/class/power_supply/bms
+TW_NO_HEALTHD := true
+
 # Crypto
 TW_USE_FSCRYPT_POLICY := 2
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
-#TW_PREPARE_DATA_MEDIA_EARLY := true
-TW_FORCE_KEYMASTER_VER := true # Note that this is just a dummy value, because stock don't actually have keymaster, only keymint.
 
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 
@@ -162,3 +165,6 @@ TW_INCLUDE_RESETPROP := true
 BOARD_VENDOR_RAMDISK_USE_LZ4 := true
 BOARD_RAMDISK_USE_LZ4 := true
 TW_INCLUDE_STRACE := true
+TW_LOAD_VENDOR_MODULES := "goodix_brl_u_mmi.ko touchscreen_u_mmi.ko aw862x_v.ko"
+TW_LOAD_VENDOR_BOOT_MODULES := true
+TW_SKIP_ADDITIONAL_FSTAB := true
