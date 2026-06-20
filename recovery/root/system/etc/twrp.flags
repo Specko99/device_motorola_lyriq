@@ -1,0 +1,15 @@
+# fstab file to set partition behaviour
+#<mnt_point>              <type>      <device>                          <flags>
+/metadata                  ext4       /dev/block/by-name/metadata       flags=backup=1;wipeingui=0;display="Metadata"
+/protect_f                 ext4       /dev/block/by-name/protect1       flags=backup=1;wipeingui=0;symlink=/mnt/vendor/protect_f
+/protect_s                 ext4       /dev/block/by-name/protect2       flags=backup=1;wipeingui=0;symlink=/mnt/vendor/protect_s
+/nvcfg                     ext4       /dev/block/by-name/nvcfg          flags=backup=1;wipeingui=0;display="Nvcfg";symlink=/mnt/vendor/nvcfg
+/nvdata                    ext4       /dev/block/by-name/nvdata         flags=display="NVDATA";wipeingui=0;symlink=/mnt/vendor/nvdata
+/persist                   ext4       /dev/block/by-name/persist        flags=backup=1;display="Persist";wipeingui=0;symlink=/mnt/vendor/persist
+/prodpersist               ext4       /dev/block/by-name/prodpersist    flags=backup=1;display="ProdPersist";wipeingui=0;symlink=/mnt/product/persist
+/tzapp                     ext4       /dev/block/by-name/tzapp_a        flags=backup=1;display="TZapp";wipeingui=0;symlink=/mnt/vendor/tzapp
+/nvram                     emmc       /dev/block/by-name/nvram          flags=backup=1;display="NVRAM"
+/vendor_boot               emmc       /dev/block/by-name/vendor_boot    flags=backup=1;display="Vendor Boot";slotselect;flashimg=1
+
+# OTG
+/usb_otg auto /dev/block/sdd1 /dev/block/sdd flags=display="USB-OTG";storage;wipeingui;removable;fsflags=utf8
