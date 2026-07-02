@@ -43,6 +43,11 @@ AB_OTA_POSTINSTALL_CONFIG += \
 PRODUCT_PACKAGES += \
     android.system.keystore2
 
+# FastbootD Implementation
+PRODUCT_PACKAGES += \
+    android.hardware.fastboot@1.1-impl-mock \
+    fastbootd
+
 # Dynamic
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
