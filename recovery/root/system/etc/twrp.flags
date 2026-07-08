@@ -11,5 +11,8 @@
 /nvram                     emmc       /dev/block/by-name/nvram          flags=backup=1;display="NVRAM"
 /vendor_boot               emmc       /dev/block/by-name/vendor_boot    flags=backup=1;display="Vendor Boot";slotselect;flashimg=1
 
+# Internal Storage
+/storage                   auto       /data/media/0                     flags=display="Internal Storage";usermrf;backup=1;fsflags="bind";removable
+
 # OTG
 /usb_otg auto /dev/block/sdd1 /dev/block/sdd flags=display="USB-OTG";storage;wipeingui;removable;fsflags=utf8
