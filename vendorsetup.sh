@@ -64,3 +64,9 @@ export FOX_ADD_API_V36_PREBUILTS=2
 
 # Flashlight
 export OF_FL_PATH1="/sys/class/leds/mt6360_flash_ch1"
+
+# Bootctl AIDL - prebuilt
+export OF_USE_AIDL_BOOT_CONTROL=1
+
+# Vendor_boot
+export FOX_VENDOR_BOOT_RECOVERY=1
