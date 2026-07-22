@@ -73,3 +73,6 @@ export FOX_VENDOR_BOOT_RECOVERY=1
 
 # Flash ofox as whole vendor_boot
 export FOX_VENDOR_BOOT_FLASH_RAMDISK_ONLY=0
+
+# Testing
+export FOX_INSTALLER_DEBUG_MODE=1
