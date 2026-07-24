@@ -72,7 +72,7 @@ export OF_USE_AIDL_BOOT_CONTROL=1
 export FOX_VENDOR_BOOT_RECOVERY=1
 
 # Flash ofox as whole vendor_boot as we are able to boot stock
-export FOX_INSTALLER_VENDOR_BOOT_RAMDISK_INSTALL=0
+export FOX_INSTALLER_VENDOR_BOOT_RAMDISK_INSTALL=1
 
 # Testing
 export FOX_INSTALLER_DEBUG_MODE=1
