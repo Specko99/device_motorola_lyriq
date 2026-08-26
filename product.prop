@@ -1,0 +1,40 @@
+# Display
+ro.surface_flinger.enable_frame_rate_override=true
+
+# Radio
+ril.subscription.types=RUIM
+ro.telephony.default_network=26,26
+ro.telephony.esim_slot_id=1
+
+# Miscellaneous
+esim.enable_esim_system_ui_by_default=true
+masterclear.allow_retain_esim_profiles_after_fdr=true
+persist.mot_bt.aptx_cert=true
+persist.rcs.supported=0
+persist.vendor.mtk_rcs_ua_support=0
+persist.vendor.mtk_uce_support=0
+persist.vendor.vt.RTPInfo=1
+persist.vendor.vt.supported=1
+persist.wm.extensions.enabled=true
+remote_provisioning.hostname=remoteprovisioning.googleapis.com
+ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.threebutton
+ro.com.google.gmsversion=15_202503
+ro.com.google.ime.kb_pad_port_l=11
+ro.com.google.ime.kb_pad_port_r=11
+ro.com.google.ime.system_lm_dir=/product/usr/share/ime/google/d3_lms/
+ro.config.wallpaper=product/media/wallpapers/default_moto_wallpaper.jpg
+ro.gwfcactivation.disabled_carriers=1187,1779,2119,2120,10000,10013,10021,10022,2525,2526,2527,10029,2024,2025,2027,2028,2029,2031,2534,2538,2539,10012,10028,1492,28,1839
+ro.lenovo.single_hand=1
+ro.mot.build.customerid=global
+ro.mot.satellite=true
+ro.opa.eligible_device=true
+ro.postinstall.fstab.prefix=/product
+ro.product.build.16k_page.enabled=false
+ro.product.build.no_bionic_page_size_macro=true
+#ro.product.cpu.pagesize.max=4096
+ro.product.gms_premier_tier=true
+ro.product.property_source_order=product,odm,vendor,system_ext,system
+ro.setupwizard.rotation_locked=true
+ro.support_one_handed_mode=true
+ro.vendor.radio.imei.sv=39
+

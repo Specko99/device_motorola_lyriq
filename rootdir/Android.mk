@@ -5,6 +5,4 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE),lyriq)
-include $(call all-subdir-makefiles,$(LOCAL_PATH))
-endif
+# Recovery init configuration files

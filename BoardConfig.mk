@@ -1,23 +1,26 @@
 #
-# Copyright (C) 2024 The Android Open Source Project
-# Copyright (C) 2024 SebaUbuntu's TWRP device tree generator
-#
+# SPDX-FileCopyrightText: The LineageOS Project
 # SPDX-License-Identifier: Apache-2.0
 #
 
 DEVICE_PATH := device/motorola/lyriq
 
-# Build Hack
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
-BUILD_BROKEN_NINJA_USES_ENV_VARS += RTIC_MPGEN
-BUILD_BROKEN_PLUGIN_VALIDATION := soong-libaosprecovery_defaults soong-libguitwrp_defaults soong-libminuitwrp_defaults soong-vold_defaults
 
-# Assertation
-TARGET_OTA_ASSERT_DEVICE := lyriq
-
-# For building with minimal manifest
-ALLOW_MISSING_DEPENDENCIES := true
+# A/B
+AB_OTA_UPDATER := true
+AB_OTA_PARTITIONS := \
+    boot \
+    dtbo \
+    product \
+    system \
+    system_ext \
+    vbmeta \
+    vbmeta_system \
+    vendor_boot \
+    vendor \
+    vendor_dlkm
 
 # Architecture
 TARGET_ARCH := arm64
@@ -41,134 +44,118 @@ TARGET_NO_BOOTLOADER := true
 # Display
 TARGET_SCREEN_DENSITY := 400
 
-# Build Hack
-BUILD_BROKEN_DUP_RULES := true
+# Filesystem
+TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/mot_aids.fs
 
-TARGET_NO_KERNEL := true
-BOARD_RAMDISK_USE_LZ4 := true
-BOARD_KERNEL_SEPARATED_DTBO := true
-
-# Kernel
+# Offsets
 BOARD_KERNEL_BASE := 0x40078000
-BOARD_VENDOR_CMDLINE := bootopt=64S3,32N2,64N2
+BOARD_VENDOR_CMDLINE := bootopt=64S3,32N2,64N2 
 BOARD_RAMDISK_OFFSET := 0x11088000
 BOARD_TAGS_OFFSET := 0x07c08000
 BOARD_BOOT_HEADER_VERSION := 4
+BOARD_VENDOR_BOOTIMAGE_HEADER_VERSION := 4
 BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_DTB_OFFSET := 0x07c08000
 BOARD_HEADER_SIZE := 2128
 BOARD_PAGE_SIZE := 4096
 BOARD_DTB_SIZE := 247347
 
+# Kernel
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 BOARD_MKBOOTIMG_ARGS += --vendor_cmdline $(BOARD_VENDOR_CMDLINE)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_PAGE_SIZE) --board ""
 BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_TAGS_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
+BOARD_KERNEL_SEPARATED_DTBO := true
 
-# Kernel - prebuilt dtb
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb
+include device/motorola/lyriq-kernel/BoardConfigKernel.mk
+# Kernel
+include device/motorola/lyriq-kernel/kernel.mk
+
+BOARD_USES_METADATA_PARTITION := true
+BOARD_ROOT_EXTRA_FOLDERS += metadata
+
+BOARD_RAMDISK_USE_LZ4 := true
+BOARD_USES_GENERIC_KERNEL_IMAGE := true
+BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
-BOARD_HAS_LARGE_FILESYSTEM := true
-BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
+BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
+BOARD_DTBOIMG_PARTITION_SIZE := 8388608
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 67108864
 BOARD_SUPER_PARTITION_SIZE := 9126805504 # TODO: Fix hardcoded value
 BOARD_SUPER_PARTITION_GROUPS := motorola_dynamic_partitions
-BOARD_MOTOROLA_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext vendor_dlkm vendor product
+BOARD_MOTOROLA_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext vendor vendor_dlkm product
 BOARD_MOTOROLA_DYNAMIC_PARTITIONS_SIZE := 9122611200 # TODO: Fix hardcoded value
 
-# Workaround for error copying vendor files to recovery ramdisk
-BOARD_PARTITION_LIST := $(call to-upper, $(BOARD_MOTOROLA_DYNAMIC_PARTITIONS_PARTITION_LIST))
-$(foreach p, $(BOARD_PARTITION_LIST), $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := erofs))
-$(foreach p, $(BOARD_PARTITION_LIST), $(eval TARGET_COPY_OUT_$(p) := $(call to-lower, $(p))))
+BOARD_SYSTEM_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDOR_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
 
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
+TARGET_COPY_OUT_SYSTEM_DLKM := system_dlkm
+TARGET_COPY_OUT_ODM := vendor/odm
+TARGET_COPY_OUT_PRODUCT := product
+TARGET_COPY_OUT_SYSTEM_EXT := system_ext
+TARGET_COPY_OUT_VENDOR := vendor
+TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 
 # Platform
 TARGET_BOARD_PLATFORM := mt6893
 
+# Properties
+TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
+TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
+TARGET_PRODUCT_PROP += $(DEVICE_PATH)/product.prop
+TARGET_SYSTEM_EXT_PROP += $(DEVICE_PATH)/system_ext.prop
+TARGET_SYSTEM_DLKM_PROP += $(DEVICE_PATH)/system_dlkm.prop
+TARGET_ODM_PROP += $(DEVICE_PATH)/odm.prop
+TARGET_ODM_DLKM_PROP += $(DEVICE_PATH)/odm_dlkm.prop
+TARGET_VENDOR_DLKM_PROP += $(DEVICE_PATH)/vendor_dlkm.prop
+
+# HIDL / AIDL
+DEVICE_MATRIX_FILE :=   $(DEVICE_PATH)/configs/vintf/compatibility_matrix.xml
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/configs/vintf/manifest.xml \
+                        $(wildcard $(DEVICE_PATH)/configs/vintf/manifest/*.xml)
+
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
+    hardware/mediatek/vintf/mediatek_framework_compatibility_matrix.xml \
+    hardware/mediatek/vintf/mediatek_framework_compatibility_matrix_aidl.xml \
+    hardware/motorola/vintf/device_framework_matrix.xml \
+    $(DEVICE_PATH)/configs/vintf/device_framework_compatibility_matrix.xml
+
 # Recovery
-TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.mt6893
+TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 TARGET_USERIMAGES_USE_F2FS := true
-
-# Vendor_boot recovery ramdisk
-BOARD_USES_GENERIC_KERNEL_IMAGE := true
-BOARD_STORE_RAMDISK_IN_VENDORBOOT := true
-BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
-BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE := 
-BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := 
+TARGET_NO_RECOVERY := true
 BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
+BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
 
-# Mtk
-BOARD_USES_MTK_HARDWARE := true
-
-# Treble
-BOARD_VNDK_VERSION := current
-
-# Verified Boot
-BOARD_AVB_ENABLE := true
-
-# Vendor Modules
-TW_LOAD_VENDOR_MODULES := true
-
-# Hack: prevent anti rollback
-PLATFORM_VERSION := 99.87.36
-PLATFORM_SECURITY_PATCH := 2127-12-31
-PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
-VENDOR_SECURITY_PATCH   := $(PLATFORM_SECURITY_PATCH)
-BOOT_SECURITY_PATCH     := $(PLATFORM_SECURITY_PATCH)
+# Security patch level
+VENDOR_SECURITY_PATCH := 2026-06-01
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
-BOARD_AVB_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
-BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
-BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
-BOARD_AVB_RECOVERY_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
-BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
+BOARD_AVB_VENDOR_BOOT_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
+BOARD_AVB_VENDOR_BOOT_ALGORITHM := SHA256_RSA4096
+BOARD_AVB_VENDOR_BOOT_ROLLBACK_INDEX := 1
+BOARD_AVB_VENDOR_BOOT_ROLLBACK_INDEX_LOCATION := 1
 
-# Custom battery path
-TW_USE_LEGACY_BATTERY_SERVICES := true
-TW_CUSTOM_BATTERY_PATH := /sys/class/power_supply/bms
-TW_NO_HEALTHD := true
+BOARD_AVB_VBMETA_SYSTEM := product system system_ext
+BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
+BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := 30
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
 
-# Crypto
-TW_USE_FSCRYPT_POLICY := 2
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
-TW_INCLUDE_FBE_METADATA_DECRYPT := true
-
-TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
-
-# TWRP Configuration
-TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
-TW_THEME := portrait_hdpi
-TW_DEFAULT_BRIGHTNESS := 1300
-TW_FRAMERATE := 120
-TW_LINKER_DEBUG := true
-TW_EXTRA_LANGUAGES := false
-TW_EXCLUDE_APP_MANAGER := true
-BOARD_HAS_NO_REAL_SDCARD := true
-TW_EXCLUDE_USB_STORAGE := true
-TARGET_USES_LOGD := true
-TWRP_INCLUDE_LOGCAT := true
-TW_SCREEN_BLANK_ON_BOOT := true
-TW_USE_TOOLBOX := true
-TW_EXCLUDE_DEFAULT_USB_INIT := true
-TW_HAS_MTP := true
-TW_INCLUDE_ADB := true
-TW_EXCLUDE_APEX := true
-TW_INCLUDE_REPACKTOOLS := true
-TW_INCLUDE_FASTBOOTD := true
-TW_INCLUDE_RESETPROP := true
-BOARD_VENDOR_RAMDISK_USE_LZ4 := true
-BOARD_RAMDISK_USE_LZ4 := true
-TW_INCLUDE_STRACE := true
-TW_LOAD_VENDOR_MODULES := "goodix_brl_u_mmi.ko touchscreen_u_mmi.ko aw862x_v.ko flashlight.ko leds-mt6360.ko"
-TW_LOAD_VENDOR_BOOT_MODULES := true
-TW_SKIP_ADDITIONAL_FSTAB := true
+# Inherit the proprietary files
+include vendor/motorola/lyriq/BoardConfigVendor.mk
