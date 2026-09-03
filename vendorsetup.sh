@@ -77,6 +77,3 @@ export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES=1
 
 # Disable reflasing for now
 export OF_NO_REFLASH_CURRENT_ORANGEFOX=1
-
-# Set ofox configs to load from data
-export FOX_USE_DATA_RECOVERY_FOR_SETTINGS=1
