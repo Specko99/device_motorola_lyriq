@@ -82,4 +82,4 @@ export OF_NO_REFLASH_CURRENT_ORANGEFOX=1
 export FOX_DELETE_AROMAFM=1
 
 # Adjust status bar
-export OF_STATUS_H=106
+export OF_STATUS_H=116
