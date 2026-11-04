@@ -77,3 +77,9 @@ export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES=1
 
 # Disable reflasing for now
 export OF_NO_REFLASH_CURRENT_ORANGEFOX=1
+
+# Aroma doesn't work
+export FOX_DELETE_AROMAFM=1
+
+# Adjust status bar
+export OF_SCREEN_H=102
