@@ -81,7 +81,7 @@ export OF_NO_REFLASH_CURRENT_ORANGEFOX=1
 # Aroma doesn't work
 export FOX_DELETE_AROMAFM=1
 
-export FOX_MAINTAINER_PATCH_VERSION="1"
+export FOX_BUILD_TYPE=Beta
 
 # Adjust status bar
 export OF_STATUS_H=116
