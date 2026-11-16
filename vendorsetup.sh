@@ -71,6 +71,9 @@ export OF_USE_AIDL_BOOT_CONTROL=1
 # Vendor_boot
 export FOX_VENDOR_BOOT_RECOVERY=1
 
+# Generated image doesn't break boot on stock/custom rom
+export FOX_INSTALLER_VENDOR_BOOT_RAMDISK_INSTALL=0
+
 # Misc
 export FOX_USE_UPDATED_MAGISKBOOT=1
 export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES=1
